@@ -9,6 +9,7 @@ with open(csvpath) as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
     # Read the header row first (skip this step if there is now header)
     csv_header = next(csvreader)
+    
     # Read each row of data after the header
     data = []
     
@@ -16,9 +17,11 @@ with open(csvpath) as csvfile:
         data.append(row)
     print("Election Results")
     print("----------------------------")
+
 # The total number of votes cast
     print(f'Total Voters Cast: {len(data)}')
     print("----------------------------")
+    
 # A complete list of candidates who received votes
     khan=0
     correy=0
