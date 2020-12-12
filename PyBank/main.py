@@ -50,37 +50,7 @@
 
 # ## PyPoll
 
-# ![Vote Counting](Images/Vote_counting.png)
 
-# In this challenge, you are tasked with helping a small, rural town modernize its vote counting process.
-
-# You will be give a set of poll data called [election_data.csv](PyPoll/Resources/election_data.csv). The dataset is composed of three columns: `Voter ID`, `County`, and `Candidate`. Your task is to create a Python script that analyzes the votes and calculates each of the following:
-
-# The total number of votes cast
-
-# A complete list of candidates who received votes
-
-# The percentage of votes each candidate won
-
-# The total number of votes each candidate won
-
-# The winner of the election based on popular vote.
-
-# As an example, your analysis should look similar to the one below:
-
-#   ```text
-#   Election Results
-#   -------------------------
-#   Total Votes: 3521001
-#   -------------------------
-#   Khan: 63.000% (2218231)
-#   Correy: 20.000% (704200)
-#   Li: 14.000% (492940)
-#   O'Tooley: 3.000% (105630)
-#   -------------------------
-#   Winner: Khan
-#   -------------------------
-#   ```
 
 # In addition, your final script should both print the analysis to the terminal and export a text file with the results.
 
@@ -113,83 +83,58 @@
 
 # Trilogy Education Services © 2019. All Rights Reserved.
 
-
-
-
-# Import two modules necessary for this homework
 import os
 import csv
+csvpath = os.path.join('Resources', 'budget_data.csv')
 
-# Prompt user for budget information and import csv
 
-budget_file_to_load=os.path.join("Resources","budget_data.csv")
-for row in budget_file_to_load:
-    print row
+with open(csvpath) as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
 
-# # The total number of months included in the dataset
-# total_months = 0
-# total_profit = 0
-# previousNum = 0
-# profit_losses = []
-# sum_of_profloss = 0
-# net_change = 0
-# greatest_increase = 0
-# greatest_increase_month = ""
-# greatest_decrease = 0
-# decrease_month = ""
- 
-# # Read CSV file and convert to a list of dictionaries
-# with open(budget_file_to_load) as budget_file:
-#     reader = csv.reader(budget_file)
+    # Read the header row first (skip this step if there is now header)
+    csv_header = next(csvreader)
     
-#     # Read the Header Row
-#     first_row = next(reader)
     
-# # print(first_row)
-
-# # header = next(reader)
-# # first_row = next(reader)
-# previousNum = int(first_row[1])
-# total_profit = int(first_row[1])
-
-# for row in reader:
-#     total_months = total_months + 1
-#     total_profit = total_profit + int(row[1])
-
-#     #Calculate net changes
-#     net_change = previousNum - int(row[1])
-#     profit_losses.append(int(row[1])) - previousNum
-#     previousNum = int(row[1])
-#     if net_change > greatest_increase:
-#         greatest_increase = net_change
-#         increase_month = row[0]
-#     if net_change < greatest_decrease:
-#         greatest_decrease = net_change
-#         increase_month= row[0]
-
-# for x in profit_losses:
-#     sum_of_profloss = sum_of_profloss + x
-# print(total_months)
-# print(profit_losses)
-# print(sum_of_profloss/len(profit_losses))
-# print(total_profit)
-# print(max(profit_losses))
-# print(min(profit_losses))
-# print(greatest_increase, increase_month)
-# print(greatest_decrease, decrease_month)
-# print("------------------------")
-
+    # Read each row of data after the header
+    data = []
     
-# # print(budget_file)
+    for row in csvreader:
+        data.append(row)
+   
+    print("Financial Analysis")
+    print("----------------------------")
+#   * The total number of months included in the dataset
+    print(f'Total Months: {len(data)}')
+    
+#   * The net total amount of "Profit/Losses" over the entire period
+    total_amount = 0
+    for i in data: 
+        total_amount = total_amount+int(i[1])
+    print(f'Total: ${total_amount}')
+#   * Calculate the changes in "Profit/Losses" over the entire period, then find the average of those changes
+    change_list=[]
+    for i in range (0,len(data)-1):
+        change=int(data[i+1][1])-int(data[i][1])
+        change_list.append(change)
+    average=sum(change_list)/len(change_list)
+    print(f'Average  Change: ${round(average,2)}')
+#   * The greatest increase in profits (date and amount) over the entire period
+    
+    greatest_increase_month = data[change_list.index(max(change_list))+1][0]
+    print(f'Greatest Increase in Profits: {greatest_increase_month} (${max(change_list)})')
 
-# # budget_header = next(reader) 
-# # print(f"Budget Header: {budget_header}")
+#   * The greatest decrease in losses (date and amount) over the entire period
+    
+    greatest_decrease_month = data[change_list.index(min(change_list))+1][0]
+    print(f'Greatest decrease in Profits: {greatest_decrease_month} (${min(change_list)})')
 
-# # #     for row in reader:
-# # print(row)
-
-
-
-
-
-
+output_path= os.path.join("Analysis","Final_Analysis.txt")
+with open(output_path,"w", newline="") as writer:
+   
+    writer.write("Financial Analysis\n")
+    writer.write("----------------------------\n")
+    writer.write(f'Total Months: {len(data)}\n')
+    writer.write(f'Total: ${total_amount}\n')
+    writer.write(f'Average  Change: ${round(average,2)}\n')
+    writer.write(f'Greatest Increase in Profits: {greatest_increase_month} (${max(change_list)})\n')
+    writer.write(f'Greatest decrease in Profits: {greatest_decrease_month} (${min(change_list)})\n')
