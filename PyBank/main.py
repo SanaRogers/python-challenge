@@ -19,6 +19,7 @@ with open(csvpath) as csvfile:
    
     print("Financial Analysis")
     print("----------------------------")
+    
 #   The total number of months included in the dataset
     print(f'Total Months: {len(data)}')
     
@@ -34,7 +35,7 @@ with open(csvpath) as csvfile:
         change_list.append(change)
     average=sum(change_list)/len(change_list)
     print(f'Average  Change: ${round(average,2)}')
-    
+
 # The greatest increase in profits (date and amount) over the entire period
     
     greatest_increase_month = data[change_list.index(max(change_list))+1][0]

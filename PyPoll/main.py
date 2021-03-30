@@ -5,8 +5,8 @@ import csv
 csvpath = os.path.join("Resources", "election_data.csv")
 output_path= os.path.join("Analysis","Final_Analysis.txt")
 
-with open(csvpath) as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=',')
+with open(csvpath) as csvfile_poll:
+    csvreader = csv.reader(csvfile_poll, delimiter=',')
     # Read the header row first (skip this step if there is now header)
     csv_header = next(csvreader)
     
@@ -21,7 +21,7 @@ with open(csvpath) as csvfile:
 # The total number of votes cast
     print(f'Total Voters Cast: {len(data)}')
     print("----------------------------")
-    
+
 # A complete list of candidates who received votes
     khan=0
     correy=0
